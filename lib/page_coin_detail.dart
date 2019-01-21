@@ -42,8 +42,6 @@ class _CoinDetailPage extends State<CoinDetailPage>
 
   @override
   Widget build(BuildContext context) {
-
-
     String ico = 'https://i.mickle.tech/test/' + coinName + '.png';
     return Scaffold(
       appBar: new AppBar(
@@ -127,9 +125,11 @@ class _CoinDetailPage extends State<CoinDetailPage>
 
         list.clear();
         list.add(InfoItem('最新块高', blockNum.toString(),),);
-        list.add(InfoItem('生产者', eosInfo.producer,),);
-        list.add(InfoItem('节点版本', eosInfo.version,),
-        );
+        list.add(InfoItem('账户数', eosInfo.accountNumer,),);
+        list.add(InfoItem('合约数', eosInfo.contractNumber,),);
+        list.add(InfoItem('节点数', eosInfo.bpNumber,),);
+        list.add(InfoItem('性能峰值', eosInfo.maxTps,),);
+        list.add(InfoItem('代币数', eosInfo.tokenNumber,),);
       });
     }
   }

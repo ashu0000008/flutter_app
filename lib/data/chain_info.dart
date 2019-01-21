@@ -23,8 +23,11 @@ class BTCChainInfo extends ChainInfo{
 }
 
 class EOSChainInfo extends ChainInfo{
-  String producer;
-  String version;
+  String accountNumer;
+  String tokenNumber;
+  String maxTps;
+  String bpNumber;
+  String contractNumber;
 
   EOSChainInfo(int chainType, String height):super(chainType, height);
 }
@@ -61,7 +64,7 @@ void stopChainInfoListening(ChainInfoListener listener){
 
 int count = 0;
 void _doGetChainInfo(){
-  util.getEOSInfo((Response response)=>_chainInfoGet(chainConst.chain_eos, response));
+  util.getEOSInfo2((Response response)=>_chainInfoGet(chainConst.chain_eos, response));
 
   //btc eth request limit  200 per hour
   if (0 == count%12){
@@ -108,15 +111,28 @@ void _chainInfoGet(int type, Response response){
       });
       break;
     case chainConst.chain_eos:
-      blockNum = map['head_block_num'].toString();
-      _mListeners.forEach((listener){
-        EOSChainInfo info = new EOSChainInfo(chainConst.chain_eos, blockNum);
-        info.producer = map['head_block_producer'];
-        info.version = map['server_version_string'];
-        listener.onEOSInfoGet(info);
+//      blockNum = map['head_block_num'].toString();
+//      _mListeners.forEach((listener){
+//        EOSChainInfo info = new EOSChainInfo(chainConst.chain_eos, blockNum);
+//        info.producer = map['head_block_producer'];
+//        info.version = map['server_version_string'];
+//        listener.onEOSInfoGet(info);
+//
+//        mEosChainInfo = info;
+//      });
+        Map<String, dynamic> data = map['data'];
+        blockNum = data['total_block_num'].toString();
+        _mListeners.forEach((listener){
+          EOSChainInfo info = new EOSChainInfo(chainConst.chain_eos, blockNum);
+          info.accountNumer = data['total_account_num'].toString();
+          info.tokenNumber = data['total_token_num'].toString();
+          info.maxTps = data['max_tps'].toString();
+          info.bpNumber = data['bp_num'].toString();
+          info.contractNumber = data['contract_num'].toString();
+          listener.onEOSInfoGet(info);
 
-        mEosChainInfo = info;
-      });
+          mEosChainInfo = info;
+        });
       break;
   }
 }

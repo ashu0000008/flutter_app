@@ -5,6 +5,11 @@ void getEOSInfo(var callback){
       .then((response)=>callback(response));
 }
 
+void getEOSInfo2(var callback){
+  http.get('https://api.eospark.com/api?module=block&action=get_overview&apikey=a9564ebc3289b7a14551baf8ad5ec60a')
+      .then((response)=>callback(response));
+}
+
 void getBTCInfo(var callback){
   http.get("https://api.blockcypher.com/v1/btc/main").then((response)=>callback(response));
 }
