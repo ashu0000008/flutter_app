@@ -5,7 +5,7 @@ import 'data/chain_info_listener.dart';
 import 'data/chain_const.dart';
 
 class CoinDetailPage extends StatefulWidget {
-  int type;
+  final int type;
 
   CoinDetailPage(this.type);
 
@@ -46,11 +46,11 @@ class _CoinDetailPage extends State<CoinDetailPage>
     return Scaffold(
       appBar: new AppBar(
         title: new Text(coinName.toUpperCase() + " 节点信息"),
-        leading: new Image.network(
-          ico,
-          width: 20,
-          height: 20,
-        ),
+//        leading: new Image.network(
+//          ico,
+//          width: 20,
+//          height: 20,
+//        ),
       ),
       body: Center(
         child: new ListView(
@@ -142,8 +142,8 @@ class _CoinDetailPage extends State<CoinDetailPage>
 }
 
 class InfoItem extends StatelessWidget {
-  String name;
-  String value;
+  final String name;
+  final String value;
 
   InfoItem(this.name, this.value);
 
