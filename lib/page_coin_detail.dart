@@ -1,107 +1,174 @@
 import 'package:flutter/material.dart';
-import 'app_const.dart';
+
 import 'data/chain_info.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
+import 'data/chain_info_listener.dart';
+import 'data/chain_const.dart';
 
 class CoinDetailPage extends StatefulWidget {
+  int type;
 
-  final String coinName;
-  CoinDetailPage(this.coinName);
+  CoinDetailPage(this.type);
 
   @override
   State createState() {
-    return new _CoinDetailPage(coinName);
+    return new _CoinDetailPage(type);
   }
 }
 
-class _CoinDetailPage extends State<CoinDetailPage> {
-
+class _CoinDetailPage extends State<CoinDetailPage>
+    implements ChainInfoListener {
+  int type;
   String coinName;
-  int blockNum = 0;
+  String blockNum = "";
+
   List<Widget> list = [];
-  _CoinDetailPage(this.coinName);
+
+  _CoinDetailPage(int type){
+    this.type = type;
+    switch(type){
+      case chain_btc:
+        coinName = "btc";
+        break;
+      case chain_eth:
+        coinName = "eth";
+        break;
+      case chain_eos:
+        coinName = "eos";
+        break;
+      default:
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
+
     String ico = 'https://i.mickle.tech/test/' + coinName + '.png';
     return Scaffold(
-      appBar: new AppBar(title: new Text(coinName.toUpperCase() + " 节点信息"),
-        leading: new Image.network(ico, width: 20, height: 20,),
+      appBar: new AppBar(
+        title: new Text(coinName.toUpperCase() + " 节点信息"),
+        leading: new Image.network(
+          ico,
+          width: 20,
+          height: 20,
+        ),
       ),
-      body: Center(child: new ListView(
-        itemExtent: 50,
-      children: ListTile.divideTiles(context: context, tiles: list)
-          .toList(),),),);
-  }
-
-  void updateList(){
-    list = <Widget>[
-      new InfoItem('最新块高', blockNum.toString(),),
-    ];
+      body: Center(
+        child: new ListView(
+          itemExtent: 50,
+          children:
+              ListTile.divideTiles(context: context, tiles: list).toList(),
+        ),
+      ),
+    );
   }
 
   @override
   void initState() {
-    // TODO: implement initState
-    updateList();
     super.initState();
-
-    initData();
+    startChainInfoListening(this);
   }
 
-  void initData(){
-    switch(coinName){
-      case coin_name_btc:
-        break;
-      case coin_name_eth:
-        break;
-      case coin_name_eos:
-        getEOSInfo(refreshEOS);
-        break;
+  @override
+  void onBTCInfoGet(ChainInfo info) {
+    if (type != info.chainType){
+      return;
     }
-  }
 
-  void refreshEOS(Response response){
-    Map<String, dynamic> map = json.decode(response.body);
-
-    if (this.mounted){
+    if (mounted){
       setState(() {
-        blockNum = map['head_block_num'];
-        updateList();
+        blockNum = info.height;
+        list.clear();
+        list.add(InfoItem('最新块高', blockNum.toString(),),);
+
+        BTCChainInfo btcInfo = info;
+        list.add(InfoItem('节点个数', btcInfo.peerCount,),);
+        list.add(InfoItem('未确认交易个数', btcInfo.unConfirmCount,),);
+        list.add(InfoItem('矿工费（高）', btcInfo.feeMax,),);
+        list.add(InfoItem('矿工费（中）', btcInfo.feeMedium,),);
+        list.add(InfoItem('矿工费（低）', btcInfo.feeMin,),);
       });
     }
   }
-}
-
-class InfoItem extends StatefulWidget{
-
-  String name;
-  String value;
-  InfoItem(this.name, this.value);
 
   @override
-  State createState() {
-    return new _InfoItem(name, value);
+  void onETHInfoGet(ChainInfo info) {
+    if (type != info.chainType){
+      return;
+    }
+
+    if (mounted){
+      setState(() {
+        blockNum = info.height;
+        list.clear();
+        list.add(InfoItem('最新块高', blockNum.toString(),),);
+
+        BTCChainInfo btcInfo = info;
+        list.add(InfoItem('节点个数', btcInfo.peerCount,),);
+        list.add(InfoItem('未确认交易个数', btcInfo.unConfirmCount,),);
+        list.add(InfoItem('矿工费（高）', btcInfo.feeMax,),);
+        list.add(InfoItem('矿工费（中）', btcInfo.feeMedium,),);
+        list.add(InfoItem('矿工费（低）', btcInfo.feeMin,),);
+      });
+    }
   }
 
+  @override
+  void onEOSInfoGet(ChainInfo info) {
+    if (type != info.chainType){
+      return;
+    }
+
+    if (mounted){
+      setState(() {
+        EOSChainInfo eosInfo = info;
+        blockNum = info.height;
+
+        list.clear();
+        list.add(InfoItem('最新块高', blockNum.toString(),),);
+        list.add(InfoItem('生产者', eosInfo.producer,),);
+        list.add(InfoItem('节点版本', eosInfo.version,),
+        );
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    stopChainInfoListening(this);
+    super.dispose();
+  }
 }
 
-class _InfoItem extends State<InfoItem> {
-
+class InfoItem extends StatelessWidget {
   String name;
   String value;
-  _InfoItem(this.name, this.value);
+
+  InfoItem(this.name, this.value);
 
   @override
   Widget build(BuildContext context) {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Container(margin: EdgeInsets.only(left: 20, right: 20), child:Text(name, textAlign: TextAlign.start, style: TextStyle(fontSize: 20),),),
-        Container(margin: EdgeInsets.only(left: 20, right: 20), child:Text(value, textAlign: TextAlign.end, style: TextStyle(fontSize: 20),),),
+        Container(
+          margin: EdgeInsets.only(left: 20, right: 20),
+          child: Text(
+            name,
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 20, right: 20),
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
       ],
     );
   }
-
 }
