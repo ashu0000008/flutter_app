@@ -22,6 +22,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: HomePage(title: 'Flutter Demo Home Page'),
+      routes: <String, WidgetBuilder> {
+        '/home': (_)=>new HomePage(),
+//        '/coin_detail': (_)=>new CoinDetailPage(coin),
+      },
     );
   }
 }
