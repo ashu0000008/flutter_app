@@ -4,6 +4,8 @@ import 'data/chain_const.dart';
 import 'data/chain_info.dart';
 import 'data/chain_info_listener.dart';
 import 'page_coin_detail.dart';
+import 'app_const.dart';
+import 'language/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -118,7 +120,25 @@ class _HomePageState extends State<HomePage> implements ChainInfoListener {
 
     return Scaffold(
       appBar: new AppBar(
-        title: new Text('各种链'),
+        title: new Text(AppLocalizations.of(context).title),
+        actions: <Widget>[
+          new PopupMenuButton<String>(
+              onSelected: (String value) {
+                setState(() {
+                  if (app_language_cn == value){
+                  }else{
+                  }
+                });
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
+                new PopupMenuItem<String>(
+                    value: app_language_en, child: new Text('跟随系统')),
+                new PopupMenuItem<String>(
+                    value: app_language_en, child: new Text('英语')),
+                new PopupMenuItem<String>(
+                    value: app_language_cn, child: new Text('中文'))
+              ])
+        ],
       ),
       body: Center(
         child: ListView(

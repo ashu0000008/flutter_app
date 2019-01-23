@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'language/custom_delegate.dart';
+import 'language/app_localizations.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,6 +29,18 @@ class MyApp extends StatelessWidget {
         '/home': (_)=>new HomePage(),
 //        '/coin_detail': (_)=>new CoinDetailPage(coin),
       },
+
+      localizationsDelegates: [
+        CustomDelegate.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('zh', ''),
+        const Locale('en', ''),
+      ],
+      localeResolutionCallback: (local, support)=>local,
+      onGenerateTitle: (context)=>AppLocalizations.of(context).title,
     );
   }
 }
