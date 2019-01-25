@@ -8,6 +8,7 @@ import 'app_const.dart';
 import 'language/app_localizations.dart';
 
 import 'package:hello111/hello111.dart';
+import 'package:hello222/hello222.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class HomePage extends StatefulWidget {
@@ -152,6 +153,20 @@ class _HomePageState extends State<HomePage> implements ChainInfoListener {
                 textColor: Colors.white,
                 fontSize: 16.0
             );
+          },),
+          new IconButton(icon:new Icon(Icons.add_comment), onPressed: (){
+            Hello222.platformVersion.then((version){
+              Fluttertoast.instance.showToast(
+                  msg: version,
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIos: 1,
+                  backgroundColor: Colors.grey,
+                  textColor: Colors.white,
+                  fontSize: 16.0
+              );
+            });
+
           },),
         ],
       ),
