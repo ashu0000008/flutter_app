@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> implements ChainInfoListener {
               ]),
           new IconButton(icon:new Icon(Icons.add_comment), onPressed: (){
             int result = new Calculator().addOne(1);
-            Fluttertoast.instance.showToast(
+            Fluttertoast.showToast(
                 msg: "from package hello111:"+result.toString(),
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.CENTER,
@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> implements ChainInfoListener {
           },),
           new IconButton(icon:new Icon(Icons.add_comment), onPressed: (){
             Hello222.platformVersion.then((version){
-              Fluttertoast.instance.showToast(
+              Fluttertoast.showToast(
                   msg: version,
                   toastLength: Toast.LENGTH_LONG,
                   gravity: ToastGravity.CENTER,
