@@ -7,6 +7,9 @@ import 'page_coin_detail.dart';
 import 'app_const.dart';
 import 'language/app_localizations.dart';
 
+import 'package:hello111/hello111.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 class HomePage extends StatefulWidget {
   final String title;
 
@@ -137,7 +140,19 @@ class _HomePageState extends State<HomePage> implements ChainInfoListener {
                     value: app_language_en, child: new Text('英语')),
                 new PopupMenuItem<String>(
                     value: app_language_cn, child: new Text('中文'))
-              ])
+              ]),
+          new IconButton(icon:new Icon(Icons.add_comment), onPressed: (){
+            int result = new Calculator().addOne(1);
+            Fluttertoast.instance.showToast(
+                msg: "from package hello111:"+result.toString(),
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.grey,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+          },),
         ],
       ),
       body: Center(
