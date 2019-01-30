@@ -4,6 +4,7 @@ import 'data/chain_const.dart';
 import 'data/chain_info.dart';
 import 'data/chain_info_listener.dart';
 import 'page_coin_detail.dart';
+import 'ws_test.dart';
 import 'app_const.dart';
 import 'language/app_localizations.dart';
 
@@ -122,6 +123,67 @@ class _HomePageState extends State<HomePage> implements ChainInfoListener {
       onTap: () => _gotoDetail(context, chain_eos),
     ));
 
+    list.add(ListTile(
+      title: Text(
+        "EOS",
+        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+      ),
+      subtitle: Text("EOS"),
+      leading: Image.network(
+        'https://i.mickle.tech/test/eos.png',
+        width: 30,
+        height: 30,
+      ),
+      trailing:
+      Text("abcc账号监听"),
+      onTap: () => _gotoWSTest(context, eos_account_abcc),
+    ));
+    list.add(ListTile(
+      title: Text(
+        "EOS",
+        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+      ),
+      subtitle: Text("EOS"),
+      leading: Image.network(
+        'https://i.mickle.tech/test/eos.png',
+        width: 30,
+        height: 30,
+      ),
+      trailing:
+      Text("币安账号监听"),
+      onTap: () => _gotoWSTest(context, eos_account_binance),
+    ));
+    list.add(ListTile(
+      title: Text(
+        "EOS",
+        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+      ),
+      subtitle: Text("EOS"),
+      leading: Image.network(
+        'https://i.mickle.tech/test/eos.png',
+        width: 30,
+        height: 30,
+      ),
+      trailing:
+      Text("火币账号监听"),
+      onTap: () => _gotoWSTest(context, eos_account_huobi),
+    ));
+    list.add(ListTile(
+      title: Text(
+        "EOS",
+        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+      ),
+      subtitle: Text("EOS"),
+      leading: Image.network(
+        'https://i.mickle.tech/test/eos.png',
+        width: 30,
+        height: 30,
+      ),
+      trailing:
+      Text("ok账号监听"),
+      onTap: () => _gotoWSTest(context, eos_account_okex),
+    ));
+
     return Scaffold(
       appBar: new AppBar(
         title: new Text(AppLocalizations.of(context).title),
@@ -186,3 +248,11 @@ _gotoDetail(BuildContext context, int type) {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => CoinDetailPage(type)));
 }
+
+_gotoWSTest(BuildContext context, String account) {
+  //静态路由不能传递参数
+//  Navigator.of(context).pushNamed('/coin_detail');
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => WSTestPage(account)));
+}
+
